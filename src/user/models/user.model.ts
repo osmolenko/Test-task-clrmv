@@ -3,8 +3,8 @@ import { Post } from '../../post/models/post.model';
 import { Comment } from '../../comment/models/comment.model';
 
 enum RoleEnum {
-  Admin,
-  Author,
+  Admin = 'Admin',
+  Author = 'Author',
 }
 
 registerEnumType(RoleEnum, {
@@ -25,9 +25,9 @@ export class User {
   @Field((type) => RoleEnum)
   role: RoleEnum;
 
-  @Field((type) => [Post])
+  @Field((type) => [Post], { nullable: true })
   posts: Post[];
 
-  @Field((type) => [Comment])
+  @Field((type) => [Comment], { nullable: true })
   comments: Comment[];
 }

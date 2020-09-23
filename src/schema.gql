@@ -21,8 +21,8 @@ type User {
   name: String!
   email: String!
   role: RoleEnum!
-  posts: [Post!]!
-  comments: [Comment!]!
+  posts: [Post!]
+  comments: [Comment!]
 }
 
 enum RoleEnum {
@@ -31,5 +31,6 @@ enum RoleEnum {
 }
 
 type Query {
-  user(id: String!): User!
+  hello: String!
+  user(id: String!): Comment!
 }
