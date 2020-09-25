@@ -1,20 +1,34 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column, CreateDateColumn,
+  Entity,
+  JoinColumn, ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Post } from '../post/post.entity';
 import { User } from '../user/user.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
 
-@Entity()
+@Entity('comment')
+@ObjectType()
 export class Comment {
   @PrimaryGeneratedColumn('uuid')
+  @Field()
   id: string;
 
-  @OneToOne((type) => Post)
-  @JoinColumn()
+  @ManyToOne((type) => Post, post=>post.comments)
+  @Field(type=>Post)
   post: Post;
 
-  @OneToOne((type) => User)
-  @JoinColumn()
+  @ManyToOne((type) => User, user=>user.comments)
+  @Field(type=>User)
   author: User;
 
   @Column()
+  @Field()
   text: string;
+
+  @CreateDateColumn({name:'created'})
+  @Field()
+  created: Date;
 }

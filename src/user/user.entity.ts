@@ -1,35 +1,48 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+ OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Post } from '../post/post.entity';
 import { Comment } from '../comment/comment.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
 
-export enum RoleEnum {
+enum RoleEnum {
   Admin = 'Admin',
   Author = 'Author',
 }
 
 @Entity()
+@ObjectType()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @Field()
+  id?: string;
 
   @Column()
+  @Field()
   name: string;
 
-  @Column()
+  @Column({unique:true})
+  @Field()
   email: string;
+
+  @Column()
+  @Field()
+  password: string;
 
   @Column({
     type: 'enum',
     enum: RoleEnum,
     default: RoleEnum.Author,
   })
+  @Field()
   role: RoleEnum;
 
-  @OneToOne((type) => Post)
-  @JoinColumn()
-  posts: Post;
+  @Field(type=>[Post])
+  posts: Post[];
 
-  @OneToOne((type) => Comment)
-  @JoinColumn()
-  comments: Comment;
+  @Field(type=>[Comment])
+  comments: Comment[];
 }

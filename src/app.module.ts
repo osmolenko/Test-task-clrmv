@@ -3,17 +3,32 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { UserModule } from './user/user.module';
-import { UserService } from './user/user.service';
-import { PostModule } from './post/post.module';
-import { CommentModule } from './comment/comment.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Connection } from 'typeorm';
+import { UserService } from './user/user.service';
+import { PostService } from './post/post.service';
+import { CommentService } from './comment/comment.service';
 import { User } from './user/user.entity';
 import { Post } from './post/post.entity';
 import { Comment } from './comment/comment.entity';
+import { UserModule } from './user/user.module';
+import { PostModule } from './post/post.module';
+import { CommentModule } from './comment/comment.module';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import * as Joi from '@hapi/joi';
+
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRE: Joi.string().required()
+      })
+    }),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       debug: true,
@@ -21,19 +36,21 @@ import { Comment } from './comment/comment.entity';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
       username: 'osmolenko',
       password: 'mysecretpassword',
       database: 'clearmove',
       entities: [User, Post, Comment],
       synchronize: true,
+      logging:true
     }),
     UserModule,
     PostModule,
     CommentModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService, UserService],
+  providers: [AppService,ConfigService, UserService, PostService, CommentService, AuthService ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private connection: Connection) {}
+}

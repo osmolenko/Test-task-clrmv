@@ -1,6 +1,6 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { CommentService } from '../comment/comment.service';
-import { Comment } from '../comment/models/comment.model';
+import { Comment } from '../comment/comment.entity';
 import { NotFoundException } from '@nestjs/common';
 
 @Resolver()

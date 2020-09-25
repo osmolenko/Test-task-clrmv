@@ -1,5 +1,5 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { Post } from './models/post.model';
+import { Post } from './post.entity';
 import { PostService } from './post.service';
 import { NotFoundException } from '@nestjs/common';
 
@@ -15,4 +15,7 @@ export class PostResolver {
     }
     return user;
   }
+
+
+
 }
