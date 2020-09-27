@@ -36,3 +36,8 @@ type User {
 type Query {
   user(id: String!): Comment!
 }
+
+type Mutation {
+  post(postId: String!, id: String!, text: String!): Comment!
+  deletePost(id: String!): Boolean!
+}

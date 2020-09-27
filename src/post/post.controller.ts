@@ -2,7 +2,7 @@ import { Body, Controller, HttpCode, Param, Post, Req, UseGuards } from '@nestjs
 import { PostService } from './post.service';
 import JwtAuthGuard from '../auth/jwtAuth.guard';
 import { CreatePostDto } from './dto/createPost.dto';
-import ReqUser from '../auth/reqUser.interface';
+import ReqUser from '../reqs/reqUser.interface';
 
 @Controller('post')
 export class PostController {
@@ -18,8 +18,8 @@ export class PostController {
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   @Post('create')
-  async createPost(@Body() postData: CreatePostDto, @Req() req: ReqUser){
-    return this.postService.create(postData, req.user)
+  async createPost(@Body() postData: CreatePostDto, @Req() requser: ReqUser){
+    return this.postService.create(postData, requser.user)
   }
 
   @UseGuards(JwtAuthGuard)
