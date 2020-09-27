@@ -1,10 +1,6 @@
 import { registerEnumType } from '@nestjs/graphql';
 import { Field, InputType } from 'type-graphql';
-
-enum RoleEnum {
-  Admin = 'Admin',
-  Author = 'Author',
-}
+import {RoleEnum} from '../../auth/app.roles';
 
 registerEnumType(RoleEnum, {
   name: 'RoleEnum',

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import RegisterDto from './dto/register.dto';
-import ReqUser from './reqUser.interface';
+import ReqUser from '../reqs/reqUser.interface';
 import { localAuthGuard } from './auth.guard';
 import JwtAuthGuard from './jwtAuth.guard';
 
@@ -11,7 +11,7 @@ export class AuthController {
 
 
   @Post('register')
-  async register(@Body() regData:RegisterDto){
+  register(@Body() regData:RegisterDto){
     console.log(regData)
     return this.authService.register(regData)
   }
@@ -19,7 +19,7 @@ export class AuthController {
   @HttpCode(200)
   @UseGuards(localAuthGuard)
   @Post('login')
-  async logIn(@Req() request: ReqUser) {
+  logIn(@Req() request: ReqUser) {
     const {user} = request;
     const cookie = this.authService.getCookies(user.id);
     request.res.setHeader('Set-Cookie', cookie);
@@ -29,7 +29,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logOut(@Req() request: ReqUser) {
+  logOut(@Req() request: ReqUser) {
     request.res.setHeader('Set-Cookie', this.authService.logOut());
   }
 

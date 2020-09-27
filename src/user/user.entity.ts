@@ -7,11 +7,7 @@ import {
 import { Post } from '../post/post.entity';
 import { Comment } from '../comment/comment.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
-
-enum RoleEnum {
-  Admin = 'Admin',
-  Author = 'Author',
-}
+import {RoleEnum} from '../auth/app.roles';
 
 @Entity()
 @ObjectType()
