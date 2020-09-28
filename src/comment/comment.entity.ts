@@ -1,7 +1,7 @@
 import {
   Column, CreateDateColumn,
   Entity,
-  JoinColumn, ManyToOne,
+  JoinColumn, JoinTable, ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -18,10 +18,12 @@ export class Comment {
 
   @ManyToOne((type) => Post, post=>post.comments)
   @Field(type=>Post)
+  @JoinTable()
   post: Post;
 
   @ManyToOne((type) => User, user=>user.comments)
   @Field(type=>User)
+  @JoinTable()
   author: User;
 
   @Column()

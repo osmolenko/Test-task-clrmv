@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -7,8 +7,16 @@ import { CreateUserDto } from './dto/createuser.dto';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+    @InjectRepository(User) private userRepository: Repository<User>,) {}
+
+
+    async getUserInfo(id:string){
+      const user = await this.userRepository.findOne(id)
+      user.password = undefined
+      if (user) return {
+        ...user,
+      };
+    }
 
   async getById(id: string) {
     const user = await this.userRepository.findOne({ id });

@@ -17,12 +17,14 @@ import { CommentModule } from './comment/comment.module';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import * as Joi from '@hapi/joi';
+import { AccessControlModule } from 'nest-access-control';
+import { roles } from './auth/app.roles';
 
 
 @Module({
   imports: [
+    AccessControlModule.forRoles(roles),
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         JWT_SECRET: Joi.string().required(),
